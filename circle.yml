@@ -1,0 +1,14 @@
+dependencies:
+  pre:
+    - go get github.com/mattn/goveralls
+    - go get golang.org/x/tools/cmd/cover
+
+test:
+  pre:
+    - go vet ./...
+
+  override:
+    - go test ./... -v -cover -race -coverprofile=$CIRCLE_TEST_REPORTS/coverage.out
+
+  post:
+    - /home/ubuntu/bin/goveralls -coverprofile=$CIRCLE_TEST_REPORTS/coverage.out -service=circle-ci -repotoken=$COVERALLS_TOKEN
